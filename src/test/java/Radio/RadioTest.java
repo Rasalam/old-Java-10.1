@@ -8,9 +8,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class RadioTest {
 
 
-    @ParameterizedTest
-    @CsvSource(value = {"0, 1", "1, 2", "9, 10 ", "10, 10"})
-    public void volumeUpTest(int volumeSet, int expected) {
+    @ParameterizedTest                                          // Громкость +1
+    @CsvSource(value = {"0, 1", "1, 2", "98, 99 ", "99, 99"})
+    public void test_VolumeUp(int volumeSet, int expected) {
         Radio radio = new Radio();
         radio.volumeSelect(volumeSet);
         radio.volumeUp();
@@ -18,9 +18,9 @@ class RadioTest {
         assertEquals(actual, expected);
     }
 
-    @ParameterizedTest
-    @CsvSource(value = {"0, 0", "1, 0", "10, 9 ", "9, 8"})
-    public void volumeDownTest(int volumeSet, int expected) {
+    @ParameterizedTest                                          // Громкость -1
+    @CsvSource(value = {"-1, 0", "0, 0", "1, 0", "98, 97 ", "99, 98", "100, 0"})
+    public void test_VolumeDown(int volumeSet, int expected) {
         Radio radio = new Radio();
         radio.volumeSelect(volumeSet);
         radio.volumeDown();
@@ -28,9 +28,18 @@ class RadioTest {
         assertEquals(actual, expected);
     }
 
-    @ParameterizedTest
+    @ParameterizedTest                                          // Выбор громкости
+    @CsvSource(value = {"-1, 0", "0, 0", "1, 1", "98, 98", "99,99", "100,0"})
+    public void test_VolumeSelect(int volumeSet, int expected) {
+        Radio radio = new Radio();
+        radio.volumeSelect(volumeSet);
+        int actual = radio.getVolume();
+        assertEquals(actual, expected);
+    }
+
+    @ParameterizedTest                                    // Канал +1, количество каналов по умолчанию
     @CsvSource(value = {"9, 0", "1, 2", "8, 9", "9, 0"})
-    public void channelNextTest(int channelSet, int expected) {
+    public void test_ChannelNext_NumberOfChannelDefault(int channelSet, int expected) {
         Radio radio = new Radio();
         radio.channelSelect(channelSet);
         radio.channelNext();
@@ -38,32 +47,52 @@ class RadioTest {
         assertEquals(actual, expected);
     }
 
-    @ParameterizedTest
+    @ParameterizedTest                                    // Канал -1, количество каналов по умолчанию
     @CsvSource(value = {"0, 9", "1, 0", "8, 7", "9, 8"})
-    public void channelPrevTest(int channelSet, int expected) {
+    public void test_ChannelPrev_NumberOfChannelDefault(int channelSet, int expected) {
         Radio radio = new Radio();
         radio.channelSelect(channelSet);
         radio.channelPrev();
         int actual = radio.getChannel();
         assertEquals(actual, expected);
-
     }
 
-    @ParameterizedTest
+    @ParameterizedTest                                    // Выбор канала, количество каналов по умолчанию
     @CsvSource(value = {"-1, 0", "0, 0", "1, 1", "8, 8", "9,9", "10, 0"})
-    public void channelSetupTest(int channelSet, int expected) {
+    public void test_ChannelSelect_NumberOfChannelDefault(int channelSet, int expected) {
         Radio radio = new Radio();
         radio.channelSelect(channelSet);
         int actual = radio.getChannel();
         assertEquals(actual, expected);
     }
 
-    @ParameterizedTest
-    @CsvSource(value = {"-1, 0", "0, 0", "1, 1", "9, 9", "10,10", "11, 0"})
-    public void volumeSetupTest(int volumeSet, int expected) {
-        Radio radio = new Radio();
-        radio.volumeSelect(volumeSet);
-        int actual = radio.getVolume();
+    @ParameterizedTest                                    // Канал +1, количество каналов выбрано пользователем
+    @CsvSource(value = {"50, 0, 1", "50, 1, 2", "50, 49, 50", "50, 50, 0"})
+    public void test_ChannelNext_NumberOfChannelSelected(int numberOfChannel, int channelSet, int expected) {
+        Radio radio = new Radio(numberOfChannel);
+        radio.channelSelect(channelSet);
+        radio.channelNext();
+        int actual = radio.getChannel();
         assertEquals(actual, expected);
     }
+
+    @ParameterizedTest                                    // Канал -1, количество каналов выбрано пользователем
+    @CsvSource(value = {"50, 0, 50", "50, 1, 0", "50, 50, 49", "50, 49, 48"})
+    public void test_ChannelPrev_NumberOfChannelSelected(int numberOfChannel, int channelSet, int expected) {
+        Radio radio = new Radio(numberOfChannel);
+        radio.channelSelect(channelSet);
+        radio.channelPrev();
+        int actual = radio.getChannel();
+        assertEquals(actual, expected);
+    }
+
+    @ParameterizedTest                                    // Выбор канала, количество каналов по умолчанию
+    @CsvSource(value = {"50, -1, 0", "50, 0, 0", "50, 1, 1", "50, 51, 0", "50, 50, 50", "50, 49, 49"})
+    public void test_ChannelSelect_NumberOfChannelSelected(int numberOfChannel, int channelSet, int expected) {
+        Radio radio = new Radio(numberOfChannel);
+        radio.channelSelect(channelSet);
+        int actual = radio.getChannel();
+        assertEquals(actual, expected);
+    }
+
 }
