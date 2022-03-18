@@ -1,18 +1,19 @@
 package Radio;
 
-// Номера радиостанций 0 - 9, циклический переход вверх, вниз, возможность установки станции по ее нореру
-// Уровни звука 0 - 10, последовательные переходы 0 - 10, 10- 0.
+// Количество радиостанций 10 по умолчанию, цииклические переходы 0->9->0, возможность установки станции по ее номеру
+// Пользователь может выбрать количество станцией, отличное от количества по умолчанию
+// Уровни звука 0 - 99, последовательные переходы 0->99, 99->0.
 
 public class Radio {
     private int volume;
     private int channel;
-    private int numberOfChannel = 9;
+    private int numberOfChannel = 10;
 
     public Radio(int numberOfChannel) {                 // numberOfChannel Constructor
         this.numberOfChannel = numberOfChannel;
     }
 
-    public Radio () {                                   // NoArg Constructor
+    public Radio() {                                   // NoArg Constructor
 
     }
 
@@ -38,14 +39,14 @@ public class Radio {
     }
 
     public void channelNext() {                 //Переключить на следующий канал
-        if (channel >= numberOfChannel) {
+        if (channel >= numberOfChannel - 1) {
             channel = 0;
         } else channel++;
     }
 
     public void channelPrev() {                 //Переключить на предыдущий канал
         if (channel <= 0) {
-            channel = numberOfChannel;
+            channel = numberOfChannel - 1;
         } else channel--;
     }
 
@@ -60,7 +61,7 @@ public class Radio {
     }
 
     public void channelSelect(int channelSet) {  //Установить канал напрямую
-        if (channelSet > numberOfChannel) {
+        if (channelSet > numberOfChannel - 1) {
             return;
         }
         if (channelSet < 0) {

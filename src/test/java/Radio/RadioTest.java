@@ -9,7 +9,7 @@ class RadioTest {
 
 
     @ParameterizedTest                                          // Громкость +1
-    @CsvSource(value = {"0, 1", "1, 2", "98, 99 ", "99, 99"})
+    @CsvSource(value = {"-1, 1", "0, 1", "1, 2", "98, 99 ", "99, 99", "100, 1"})
     public void test_VolumeUp(int volumeSet, int expected) {
         Radio radio = new Radio();
         radio.volumeSelect(volumeSet);
@@ -38,7 +38,7 @@ class RadioTest {
     }
 
     @ParameterizedTest                                    // Канал +1, количество каналов по умолчанию
-    @CsvSource(value = {"9, 0", "1, 2", "8, 9", "9, 0"})
+    @CsvSource(value = {"0, 1", "1, 2", "8, 9", "9, 0"})
     public void test_ChannelNext_NumberOfChannelDefault(int channelSet, int expected) {
         Radio radio = new Radio();
         radio.channelSelect(channelSet);
@@ -48,7 +48,7 @@ class RadioTest {
     }
 
     @ParameterizedTest                                    // Канал -1, количество каналов по умолчанию
-    @CsvSource(value = {"0, 9", "1, 0", "8, 7", "9, 8"})
+    @CsvSource(value = {"1, 0", "2, 1", "9, 8", "0, 9"})
     public void test_ChannelPrev_NumberOfChannelDefault(int channelSet, int expected) {
         Radio radio = new Radio();
         radio.channelSelect(channelSet);
@@ -58,7 +58,7 @@ class RadioTest {
     }
 
     @ParameterizedTest                                    // Выбор канала, количество каналов по умолчанию
-    @CsvSource(value = {"-1, 0", "0, 0", "1, 1", "8, 8", "9,9", "10, 0"})
+    @CsvSource(value = {"-1, 0", "0, 0", "1, 1", "2, 2", "9, 9", "10, 0"})
     public void test_ChannelSelect_NumberOfChannelDefault(int channelSet, int expected) {
         Radio radio = new Radio();
         radio.channelSelect(channelSet);
@@ -67,7 +67,7 @@ class RadioTest {
     }
 
     @ParameterizedTest                                    // Канал +1, количество каналов выбрано пользователем
-    @CsvSource(value = {"50, 0, 1", "50, 1, 2", "50, 49, 50", "50, 50, 0"})
+    @CsvSource(value = {"50, 0, 1", "50, 1, 2", "50, 48, 49", "50, 49, 0"})
     public void test_ChannelNext_NumberOfChannelSelected(int numberOfChannel, int channelSet, int expected) {
         Radio radio = new Radio(numberOfChannel);
         radio.channelSelect(channelSet);
@@ -77,7 +77,7 @@ class RadioTest {
     }
 
     @ParameterizedTest                                    // Канал -1, количество каналов выбрано пользователем
-    @CsvSource(value = {"50, 0, 50", "50, 1, 0", "50, 50, 49", "50, 49, 48"})
+    @CsvSource(value = {"50, 0, 49", "50, 1, 0", "50, 48, 47", "50, 49, 48"})
     public void test_ChannelPrev_NumberOfChannelSelected(int numberOfChannel, int channelSet, int expected) {
         Radio radio = new Radio(numberOfChannel);
         radio.channelSelect(channelSet);
@@ -87,7 +87,7 @@ class RadioTest {
     }
 
     @ParameterizedTest                                    // Выбор канала, количество каналов по умолчанию
-    @CsvSource(value = {"50, -1, 0", "50, 0, 0", "50, 1, 1", "50, 51, 0", "50, 50, 50", "50, 49, 49"})
+    @CsvSource(value = {"50, 0, 0", "50, 1, 1", "50, 2, 2", "50, 48, 48", "50, 49, 49", "50, 50, 0"})
     public void test_ChannelSelect_NumberOfChannelSelected(int numberOfChannel, int channelSet, int expected) {
         Radio radio = new Radio(numberOfChannel);
         radio.channelSelect(channelSet);
